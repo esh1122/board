@@ -17,6 +17,6 @@
     "express-session": "^1.17.2",
     "moment": "^2.29.1",
     "mysql2": "^2.2.5",
-    "nodemon": "^2.0.9"
+    "nodemon": "^2.0.10"
   }
 }

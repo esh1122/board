@@ -18,6 +18,12 @@
             function comment_del(message){
                 location.href = "/board/comment_del/"+message;
             }
+            function content_like(no, recommend){
+                location.href = "/board/content_like?No="+no+"&recommend="+recommend ;
+            }
+            function content_hate(no, disrecommend){
+                location.href = "/board/content_hate?No="+no+"&disrecommend="+disrecommend ;
+            }
             function like(no, parent_num, recommend){
                 location.href = "/board/comment_like?No="+no+"&parent_num="+parent_num+"&recommend="+recommend ;
             }
@@ -71,6 +77,12 @@
                     </td>
                 </tr>
             </table>
+            <div align="center">
+                <button class="btn btn-outline-primary" onclick="content_like('<%=content[0].No%>','<%=content[0].recommend%>')">좋아요</button>
+                <%=content[0].recommend%>
+                <button class="btn btn-outline-danger" onclick="content_hate('<%=content[0].No%>','<%=content[0].disrecommend%>')">싫어요</button>
+                <%=content[0].disrecommend%>
+            </div>
             <h3>댓글(<%=comment.length%>)</h3>
             <table class="table">
                 <tr>
@@ -94,8 +106,8 @@
                             </div>
                         </td>
                         <td style="width: 10%;">
-                            <img src="../public/img/like.png" height="10" onclick="like('<%=comment[i].No%>', '<%=content[0].No%>','<%=comment[i].recommend%>')"><%=comment[i].recommend%>
-                            <img src="../public/img/hate.png" height="10" onclick="hate('<%=comment[i].No%>', '<%=content[0].No%>','<%=comment[i].disrecommend%>')"><%=comment[i].disrecommend%>
+                            <img src="../img/like.png" height="10" onclick="like('<%=comment[i].No%>', '<%=content[0].No%>','<%=comment[i].recommend%>')"><%=comment[i].recommend%>
+                            <img src="../img/hate.png" height="10" onclick="hate('<%=comment[i].No%>', '<%=content[0].No%>','<%=comment[i].disrecommend%>')"><%=comment[i].disrecommend%>
                         </td>
                         <%if (comment[i].post_id == post_id){%>
                             <td style="width:10%" align="right">

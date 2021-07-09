@@ -257,7 +257,7 @@ var connection = mysql.createConnection({
 router.get("/comment_like", function(req, res, next){
     var no = req.query.No ;
     var parent_num = req.query.parent_num ;
-    var recommend = ++parseInt(req.query.recommend) ;
+    var recommend = parseInt(req.query.recommend) + 1 ;
 
     console.log(parent_num, recommend) ;
     connection.query(
@@ -291,6 +291,46 @@ router.get("/comment_hate", function(req, res, next){
                 })
             }else{
                 res.redirect("/board/info?no="+parent_num) ;
+            }      
+        }
+    ) ;
+}) ;
+
+router.get("/content_like", function(req, res, next){
+    var no = req.query.No ;
+    var recommend = parseInt(req.query.recommend) + 1 ;
+
+    console.log(no, recommend) ;
+    connection.query(
+        `update board set recommend = ? where No = ?`,
+        [recommend, no], function(err,result){
+            // console.log(err) ;
+            if(err){
+                res.render("error",{
+                    message : "좋아요 추가 에러"
+                })
+            }else{
+                res.redirect("/board/info?no="+no) ;
+            }
+        }
+    ) ;
+}) ;
+
+router.get("/content_hate", function(req, res, next){
+    var no = req.query.No ;
+    var disrecommend = parseInt(req.query.disrecommend) + 1;
+
+    console.log(no, disrecommend) ;
+    connection.query(
+        `update board set disrecommend = ? where No = ?`,
+        [disrecommend, no], function(err,result){
+            // console.log(err) ;
+            if(err){
+                res.render("error",{
+                    message : "좋아요 추가 에러"
+                })
+            }else{
+                res.redirect("/board/info?no="+no) ;
             }      
         }
     ) ;
