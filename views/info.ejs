@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script>
+            function update(message){
+                location.href = "/board/update?no="+message;
+            }
+            function del(message){
+                location.href = "/board/del?no="+message;
+            }
+            function list(){
+                location.href = "/board/";
+            }
+            function comment_update(message){
+                location.href = "/board/update/"+message;
+            }
+            function comment_del(message){
+                location.href = "/board/comment_del/"+message;
+            }
+            function like(no, parent_num, recommend){
+                location.href = "/board/comment_like?No="+no+"&parent_num="+parent_num+"&recommend="+recommend ;
+            }
+            function hate(no, parent_num, disrecommend){
+                location.href = "/board/comment_hate?No="+no+"&parent_num="+parent_num+"&disrecommend="+disrecommend ;
+            }
+        </script>
+        <%- include("./head.ejs") %>
+    </head>
+    <body>
+        <%- include("./navbar.ejs") %>
+        <div style="margin : 100px 100px">
+            <table class="table">
+                <tr>
+                    <th style="width : 10% ;">
+                        글 제목
+                    </th>
+                    <td>
+                            <!--                     
+                            {No: 6, title : "test", content : "test"} -->
+                        <%=content[0].title%>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        작성자
+                    </th>
+                    <td>
+                        <%=content[0].author%>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        글 내용
+                    </th>
+                    <td style="height: 300px;">
+                        <!--                     
+                        [{No: 6, title : "test", content : "test"}] -->
+                        <%=content[0].content%>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        이미지
+                    </th>
+                    <td>
+                        <!--                     
+                        [{No: 6, title : "test", content : "test"}] -->
+                        <img src="<%=content[0].img%>" width=200>
+                        
+                    </td>
+                </tr>
+            </table>
+            <h3>댓글(<%=comment.length%>)</h3>
+            <table class="table">
+                <tr>
+                    <th style="width:15%">
+                        작성자 이름
+                    </th>
+                    <td>
+                        댓글 내용
+                    </td>
+                </tr>
+                <%for (var i = 0 ; i < comment.length; i++){%>
+                    <tr>
+                        <th>
+                            <%=comment[i].name%>
+                        </th>
+                        <td>
+                            <%=comment[i].opinion%>
+                            <div style="color: gray;">
+                                <%=comment[i].date.substring(0,4)%>.<%=comment[i].date.substring(4,6)%>.<%=comment[i].date.substring(6,8)%>
+                                <%=comment[i].time.substring(0,2)%>&#58;<%=comment[i].time.substring(2,4)%>&#58;<%=comment[i].time.substring(4,6)%>
+                            </div>
+                        </td>
+                        <td style="width: 10%;">
+                            <img src="../public/img/like.png" height="10" onclick="like('<%=comment[i].No%>', '<%=content[0].No%>','<%=comment[i].recommend%>')"><%=comment[i].recommend%>
+                            <img src="../public/img/hate.png" height="10" onclick="hate('<%=comment[i].No%>', '<%=content[0].No%>','<%=comment[i].disrecommend%>')"><%=comment[i].disrecommend%>
+                        </td>
+                        <%if (comment[i].post_id == post_id){%>
+                            <td style="width:10%" align="right">
+                                <button class="btn btn-outline-primary btn-sm" onclick="comment_update('<%=comment[i].no%>')">수정</button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="comment_del('<%=comment[i].no%>')">삭제</button>
+                            </td>
+                        <%}%>
+                    </tr>
+                <%}%>
+                <tr>
+                    <td colspan="3">
+                        <form action="/board/add_comment" method="post">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="span_title" name="title">댓글</span>
+                                <input type="hidden" name="no" value="<%=content[0].No%>">
+                                <input type="text" class="form-control" name="opinion" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                <input type="submit" class="btn btn-outline-primary">
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <div align="center">
+                <%if (content.post_id == post_id){%>
+                    <button class="btn btn-outline-primary" onclick="update('<%=content[0].No%>')">수정</button>
+                    <button class="btn btn-outline-danger" onclick="del('<%=content[0].No%>')">삭제</button>
+                <%}%>
+                <button class="btn btn-outline-info" onclick="list()">목록</button>
+            </div>
+        </div>
+    </body>
+</html>
+
+
+
